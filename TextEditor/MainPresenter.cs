@@ -1,67 +1,60 @@
 ﻿using System;
-using TextEditor.BL;
+using TextEditorCore.BL;
 
 namespace TextEditor
 {
-    public class MainPresenter
-    {
-        private readonly IMainForm _view;
-        private readonly IFileManager _manager;
-        private readonly IMessageService _messageService;
-        private string _currentFilePath;
-        public MainPresenter(IMainForm view, IFileManager manager, IMessageService service)
-        {
-            _view = view;
-            _manager = manager;
-            _messageService = service;
-            _view.SetSymbolCount(0);
-            _view.ContentChanged += new EventHandler(_view_ContentChanged);
-            _view.FileOpenClick += new EventHandler(_view_FileOpenClick);
-            _view.FileSaveClick += new EventHandler(_view_FileSaveClick);
-        }
+	public class MainPresenter<T>
+	{
+		private readonly ITextRedactor<T> _view;
+		private readonly IFileManager<T> _manager;
+		private readonly IMessageService _messageService;
+		private T _currentPath;
 
-        private void _view_FileSaveClick(object sender, EventArgs e)
-        {
-            try
-            {
-                string content = _view.Content;
-                _manager.SaveContent(content, _currentFilePath);
-                _messageService.ShowMessage("Файл успешно сохранен.");
-            }
-            catch(Exception ex)
-            {
-                _messageService.ShowError(ex.Message);
-            }
-        }
+		public MainPresenter(ITextRedactor<T> view, IFileManager<T> manager, IMessageService service)
+		{
+			_view = view;
+			_manager = manager;
+			_messageService = service;
 
-        void _view_FileOpenClick(object sender, EventArgs e)
-        {
-            try
-            {
-                string filePath = _view.FilePath;
-                bool isExist = _manager.IsExist(filePath);
-                if(!isExist)
-                {
-                    _messageService.ShowExclamation("Выбранный файл не существует.");
-                    return;
-                }
-                _currentFilePath = filePath;
-                string content = _manager.GetContent(filePath);
-                int count = _manager.GetSymbolCount(content);
-                _view.Content = content;
-                _view.SetSymbolCount(count);
-            }
-            catch(Exception ex)
-            {
-                _messageService.ShowError(ex.Message);
-            }
-        }
+			_view.SetSymbolsCount(0);
+			_view.FileChanged += _view_FileChanged;
+			_view.FileOpen += _view_FileOpen;
+			_view.FileSave += _view_FileSave;
+		}
 
-        private void _view_ContentChanged(object sender, EventArgs e)
-        {
-            string content = _view.Content;
-            int count = _manager.GetSymbolCount(content);
-            _view.SetSymbolCount(count);
-        }
-    }
+		private void _view_FileChanged(object sender, EventArgs e)
+		{
+			_view.SetSymbolsCount(_manager.GetSymbolCount(_view.Content));
+		}
+		private void _view_FileOpen(object sender, EventArgs e)
+		{
+			try
+			{
+				if (!_manager.IsExists(_view.Path))
+				{
+					_messageService.ShowExclamation("Файл не существует");
+					return;
+				}
+				_currentPath = _view.Path;
+				_view.Content = _manager.GetContent(_view.Path);
+				_view.SetSymbolsCount(_manager.GetSymbolCount(_manager.GetContent(_view.Path)));
+			}
+			catch (Exception ex)
+			{
+				_messageService.ShowError(ex.Message);
+			}
+		}
+		private void _view_FileSave(object sender, EventArgs e)
+		{
+			try
+			{
+				_manager.SaveContent(_view.Content, _currentPath);
+				_messageService.ShowMessage("Файл сохранен");
+			}
+			catch (Exception ex)
+			{
+				_messageService.ShowError(ex.Message);
+			}
+		}
+	}
 }

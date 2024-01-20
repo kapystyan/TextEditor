@@ -46,19 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="IMessageService.cs" />
+    <Compile Include="ITextRedactor.cs" />
     <Compile Include="MainPresenter.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="TextRedactor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextRedactor.Designer.cs">
+      <DependentUpon>TextRedactor.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -68,6 +67,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TextRedactor.resx">
+      <DependentUpon>TextRedactor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,9 +84,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextEditor.BL\TextEditor.BL.csproj">
-      <Project>{414b82c9-19bc-4f33-8223-c01e8bd96b71}</Project>
-      <Name>TextEditor.BL</Name>
+    <ProjectReference Include="..\TextEditorCore.BL\TextEditorCore.BL.csproj">
+      <Project>{0b4422ad-16c9-4b7e-8ce0-ecdadb6ebf05}</Project>
+      <Name>TextEditorCore.BL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

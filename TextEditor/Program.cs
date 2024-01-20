@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
-using TextEditor.BL;
+using TextEditorCore.BL;
 
 namespace TextEditor
 {
-    static class Program
+	static class Program
     {
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            MainForm form = new MainForm();
-            MessageService service = new MessageService();
-            FileManager manager = new FileManager();
-            MainPresenter presenter = new MainPresenter(form, manager, service);
-            Application.Run(form);
-        }
+			Application.EnableVisualStyles();
+			var form = new TextRedactor();
+			var presenter = new MainPresenter<string>(form, new LocalFileManager(), new MessageService());
+			Application.Run(form);
+		}
     }
 }

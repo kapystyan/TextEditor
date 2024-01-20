@@ -2,25 +2,34 @@
 
 namespace TextEditor
 {
-    public interface IMessageService
-    {
-        void ShowMessage(string message);
-        void ShowExclamation(string exclamation);
-        void ShowError(string error);
-    }
-    class MessageService : IMessageService
-    {
-        public void ShowMessage(string message)
-        {
-            MessageBox.Show(message, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        public void ShowExclamation(string exclamation)
-        {
-            MessageBox.Show(exclamation, "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-        public void ShowError(string error)
-        {
-            MessageBox.Show(error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-    }
+	/// <summary>
+	/// Содержит методы для трансляции сообщений пользователю
+	/// </summary>
+	internal class MessageService : IMessageService
+	{
+		/// <summary>
+		/// Транслирует сообщение
+		/// </summary>
+		/// <param name="message">Текст сообщения</param>
+		public void ShowMessage(string message)
+		{
+			MessageBox.Show(message, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+		/// <summary>
+		/// Транслирует о предупреждении
+		/// </summary>
+		/// <param name="exclamation">Текст предупреждения</param>
+		public void ShowExclamation(string exclamation)
+		{
+			MessageBox.Show(exclamation, "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
+		/// <summary>
+		/// Транслирует ошибку
+		/// </summary>
+		/// <param name="error">Текст ошибки</param>
+		public void ShowError(string error)
+		{
+			MessageBox.Show(error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+	}
 }
